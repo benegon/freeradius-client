@@ -411,14 +411,14 @@ __BEGIN_DECLS
 
 /*	avpair.c		*/
 
-VALUE_PAIR *rc_avpair_add(const rc_handle *, VALUE_PAIR **, int, void *, int, int);
-int rc_avpair_assign(VALUE_PAIR *, void *, int);
-VALUE_PAIR *rc_avpair_new(const rc_handle *, int, void *, int, int);
-VALUE_PAIR *rc_avpair_gen(const rc_handle *, VALUE_PAIR *, unsigned char *, int, int);
+VALUE_PAIR *rc_avpair_add(const rc_handle *, VALUE_PAIR **, int, const void *, int, int);
+int rc_avpair_assign(VALUE_PAIR *, const void *, int);
+VALUE_PAIR *rc_avpair_new(const rc_handle *, int, const void *, int, int);
+VALUE_PAIR *rc_avpair_gen(const rc_handle *, VALUE_PAIR *, const unsigned char *, int, int);
 VALUE_PAIR *rc_avpair_get(VALUE_PAIR *, int, int);
 void rc_avpair_insert(VALUE_PAIR **, VALUE_PAIR *, VALUE_PAIR *);
 void rc_avpair_free(VALUE_PAIR *);
-int rc_avpair_parse(const rc_handle *, char *, VALUE_PAIR **);
+int rc_avpair_parse(const rc_handle *, const char *, VALUE_PAIR **);
 int rc_avpair_tostr(const rc_handle *, VALUE_PAIR *, char *, int, char *, int);
 char *rc_avpair_log(rc_handle *, VALUE_PAIR *, char *buf, size_t buf_len);
 VALUE_PAIR *rc_avpair_readin(const rc_handle *, FILE *);

@@ -29,7 +29,7 @@
  *
  */
 
-VALUE_PAIR *rc_avpair_add (const rc_handle *rh, VALUE_PAIR **list, int attrid, void *pval, int len, int vendorpec)
+VALUE_PAIR *rc_avpair_add (const rc_handle *rh, VALUE_PAIR **list, int attrid, const void *pval, int len, int vendorpec)
 {
 	VALUE_PAIR     *vp;
 
@@ -54,19 +54,19 @@ VALUE_PAIR *rc_avpair_add (const rc_handle *rh, VALUE_PAIR **list, int attrid, v
  *
  */
 
-int rc_avpair_assign (VALUE_PAIR *vp, void *pval, int len)
+int rc_avpair_assign (VALUE_PAIR *vp, const void *pval, int len)
 {
 
 	switch (vp->type)
 	{
 		case PW_TYPE_STRING:
 			if (len == -1)
-				len = (uint32_t)strlen((char *)pval);
+				len = (uint32_t)strlen((const char *)pval);
 			if (len > AUTH_STRING_LEN) {
 		        	rc_log(LOG_ERR, "rc_avpair_assign: bad attribute length");
 		        	return -1;
 			}
-			memcpy(vp->strvalue, (char *)pval, len);
+			memcpy(vp->strvalue, pval, len);
 			vp->strvalue[len] = '\0';
 			vp->lvalue = len;
 			break;
@@ -74,7 +74,7 @@ int rc_avpair_assign (VALUE_PAIR *vp, void *pval, int len)
 		case PW_TYPE_DATE:
 		case PW_TYPE_INTEGER:
 	        case PW_TYPE_IPADDR:
-			vp->lvalue = * (uint32_t *) pval;
+			vp->lvalue = * (const uint32_t *) pval;
 			break;
 
 		default:
@@ -93,7 +93,7 @@ int rc_avpair_assign (VALUE_PAIR *vp, void *pval, int len)
  *
  */
 
-VALUE_PAIR *rc_avpair_new (const rc_handle *rh, int attrid, void *pval, int len, int vendorpec)
+VALUE_PAIR *rc_avpair_new (const rc_handle *rh, int attrid, const void *pval, int len, int vendorpec)
 {
 	VALUE_PAIR     *vp = NULL;
 	DICT_ATTR      *pda;
@@ -165,11 +165,11 @@ VALUE_PAIR *rc_avpair_new (const rc_handle *rh, int attrid, void *pval, int len,
  */
 
 VALUE_PAIR *
-rc_avpair_gen(const rc_handle *rh, VALUE_PAIR *pair, unsigned char *ptr,
+rc_avpair_gen(const rc_handle *rh, VALUE_PAIR *pair, const unsigned char *ptr,
     int length, int vendorpec)
 {
 	int attribute, attrlen, x_len;
-	unsigned char *x_ptr;
+	const unsigned char *x_ptr;
 	uint32_t lvalue;
 	DICT_ATTR *attr;
 	VALUE_PAIR *rpair;
@@ -260,7 +260,7 @@ rc_avpair_gen(const rc_handle *rh, VALUE_PAIR *pair, unsigned char *ptr,
 
 	switch (attr->type) {
 	case PW_TYPE_STRING:
-		memcpy(pair->strvalue, (char *)ptr, (size_t)attrlen);
+		memcpy(pair->strvalue, ptr, (size_t)attrlen);
 		pair->strvalue[attrlen] = '\0';
 		pair->lvalue = attrlen;
 		break;
@@ -277,7 +277,7 @@ rc_avpair_gen(const rc_handle *rh, VALUE_PAIR *pair, unsigned char *ptr,
 			    " attribute with invalid length");
 			goto shithappens;
 		}
-		memcpy((char *)&lvalue, (char *)ptr, 4);
+		memcpy(&lvalue, ptr, 4);
 		pair->lvalue = ntohl(lvalue);
 		break;
 
@@ -403,9 +403,9 @@ void rc_avpair_free (VALUE_PAIR *pair)
  */
 
 static void
-rc_fieldcpy(char *string, char **uptr, const char *stopat, size_t len)
+rc_fieldcpy(char *string, const char **uptr, const char *stopat, size_t len)
 {
-	char *ptr, *estring;
+	const char *ptr, *estring;
 
 	ptr = *uptr;
 	estring = string + len - 1;
@@ -454,7 +454,7 @@ rc_fieldcpy(char *string, char **uptr, const char *stopat, size_t len)
 #define PARSE_MODE_VALUE	2
 #define PARSE_MODE_INVALID	3
 
-int rc_avpair_parse (const rc_handle *rh, char *buffer, VALUE_PAIR **first_pair)
+int rc_avpair_parse (const rc_handle *rh, const char *buffer, VALUE_PAIR **first_pair)
 {
 	int             mode;
 	char            attrstr[AUTH_ID_LEN];
