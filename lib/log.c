@@ -24,7 +24,7 @@
  *
  */
 
-void rc_openlog(char *ident)
+void rc_openlog(const char *ident)
 {
 #ifndef _MSC_VER /* TODO: Fix me */
 	openlog(ident, LOG_PID, RC_LOG_FACILITY);

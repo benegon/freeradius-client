@@ -441,15 +441,15 @@ void rc_map2id_free(rc_handle *);
 
 /*	config.c		*/
 
-rc_handle *rc_read_config(char *);
-char *rc_conf_str(rc_handle *, char *);
-int rc_conf_int(rc_handle *, char *);
-SERVER *rc_conf_srv(rc_handle *, char *);
-int rc_find_server(rc_handle *, char *, uint32_t *, char *);
+rc_handle *rc_read_config(const char *);
+char *rc_conf_str(rc_handle *, const char *);
+int rc_conf_int(rc_handle *, const char *);
+SERVER *rc_conf_srv(rc_handle *, const char *);
+int rc_find_server(rc_handle *, const char *, uint32_t *, char *);
 void rc_config_free(rc_handle *);
 int rc_add_config(rc_handle *, const char *, const char *, const char *, const int);
 rc_handle *rc_config_init(rc_handle *);
-int test_config(rc_handle *, char *);
+int test_config(rc_handle *, const char *);
 
 /*	dict.c			*/
 
@@ -466,8 +466,8 @@ void rc_dict_free(rc_handle *);
 
 struct hostent *rc_gethostbyname(const char *);
 struct hostent *rc_gethostbyaddr(const char *, size_t, int);
-uint32_t rc_get_ipaddr(char *);
-int rc_good_ipaddr(char *);
+uint32_t rc_get_ipaddr(const char *);
+int rc_good_ipaddr(const char *);
 const char *rc_ip_hostname(uint32_t);
 unsigned short rc_getport(int);
 int rc_own_hostname(char *, int);
@@ -479,7 +479,7 @@ int rc_get_srcaddr(struct sockaddr *, struct sockaddr *);
 
 /*	log.c			*/
 
-void rc_openlog(char *);
+void rc_openlog(const char *);
 void rc_log(int, const char *, ...);
 
 /*	sendserver.c		*/
@@ -507,7 +507,7 @@ int rc_import_env(struct env *, char **);
 
 /* md5.c			*/
 
-void rc_md5_calc(unsigned char *, unsigned char *, unsigned int);
+void rc_md5_calc(unsigned char *, const unsigned char *, unsigned int);
 
 __END_DECLS
 
