@@ -149,6 +149,7 @@ static int rc_pack_list (VALUE_PAIR *vp, char *secret, AUTH_HDR *auth)
 			total_length += length + 2;
 			break;
 
+		    case PW_TYPE_DATE:
 		    case PW_TYPE_INTEGER:
 		    case PW_TYPE_IPADDR:
 			*buf++ = sizeof (uint32_t) + 2;
