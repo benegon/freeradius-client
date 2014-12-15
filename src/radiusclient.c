@@ -179,5 +179,5 @@ process(void *rh, VALUE_PAIR *send, int acct, int nas_port)
         i = rc_acct(rh, nas_port, send);
     }
 
-    return (i == OK_RC) ? 0 : 1;
+    return (i == OK_RC) ? 0 : i + 12;
 }
